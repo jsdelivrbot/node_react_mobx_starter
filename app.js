@@ -10,9 +10,8 @@ var fs = require('fs');
 
 var app = express();
 
-app.use('/shark', express.static('./public/views/sharkicorn.html'));
-app.use('/another', express.static('./public/views/another.html'));
-
+app.use(express.static('public'));
+app.use('/static', express.static('static'));
 
 // THIS IS OUR REST API
 app.get('/api/sharkicorns', function (req, res) {
@@ -26,9 +25,10 @@ app.get('/api/sharkicorns', function (req, res) {
     }
   });
 });
-
-
-
+//
+// app.get('*',function (req, res) {
+//         res.redirect('/');
+//     });
 
 
 
@@ -56,7 +56,7 @@ var http = require('http');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3333');
+var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
@@ -133,3 +133,5 @@ function onListening() {
   debug('Listening on ' + bind);
   console.log('our node app is spinning on port ' + bind + '!');
 };
+
+module.exports = app;
