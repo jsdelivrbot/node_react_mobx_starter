@@ -11,18 +11,105 @@ var fs = require('fs');
 var app = express();
 
 app.use(express.static('public'));
-app.use('/static', express.static('static'));
+//Webpack config to enable hot reloading
+if (process.env.NODE_ENV === 'production') {
+  console.log('Running in production mode');
+
+  app.use('/static', express.static('static'));
+} else {
+  // When not in production, enable hot reloading
+
+  var chokidar = require('chokidar');
+  var webpack = require('webpack');
+  var webpackConfig = require('./webpack.config.dev');
+  var compiler = webpack(webpackConfig);
+  app.use(require('webpack-dev-middleware')(compiler, {
+    noInfo: true,
+    publicPath: webpackConfig.output.publicPath
+  }));
+  app.use(require('webpack-hot-middleware')(compiler));
+
+  // Do "hot-reloading" of express stuff on the server
+  // Throw away cached modules and re-require next time
+  // Ensure there's no important state in there!
+  var watcher = chokidar.watch('./server');
+  watcher.on('ready', function() {
+    watcher.on('all', function() {
+      console.log('Clearing /server/ module cache from server');
+      Object.keys(require.cache).forEach(function(id) {
+        if (/\/server\//.test(id)) {
+          delete require.cache[id];
+        }
+      });
+    });
+  });
+};
 
 // THIS IS OUR REST API
-app.get('/api/sharkicorns', function (req, res) {
-  res.json({
-    name: 'Tim',
-    age: 27,
-    type: 'Great Blue',
-    tooth_orientation: {
-      missing: false,
-      snaggle: true
-    }
+app.get('/api/questions', function (req, res) {
+  console.log('req at questions endpoint');
+  res.send({
+    section1: {
+      question1: {
+          question_text: 'This is a question!',
+          option_A_text: 'Option A dope as',
+          option_B_text: 'Option B doper than'
+        },
+      question2: {
+          question_text: 'This is another question bruhhh!',
+          option_A_text: 'Option A #2',
+          option_B_text: 'Option B #2'
+        },
+      question3: {
+          question_text: 'This is question 3 bruhhh!',
+          option_A_text: 'Option A #3',
+          option_B_text: 'Option B #3'
+        },
+    },
+    section2: {
+      question1: {
+          question_text: 'This is section 2 question 1 bruhhh!',
+          option_A_text: 'Option A #4',
+          option_B_text: 'Option B #4'
+        },
+      question2: {
+          question_text: 'This is section 2 question 2 bruhhh!',
+          option_A_text: 'Option A #5',
+          option_B_text: 'Option B #5'
+        },
+      question3: {
+          question_text: 'Is nate cool?',
+          option_A_text: 'Yes',
+          option_B_text: 'No way Jose'
+        },
+      question4: {
+          question_text: 'Is Zach a good kayaker',
+          option_A_text: 'Hell ya',
+          option_B_text: 'Hells more ya'
+        },
+    },
+    section3: {
+      question1: {
+          question_text: 'This is section 3 question 1 bruhhh!',
+          option_A_text: 'Option A #6',
+          option_B_text: 'Option B #6'
+        },
+      question2: {
+          question_text: 'This is section 3 question 2 bruhhh!',
+          option_A_text: 'Option A #7',
+          option_B_text: 'Option B #7'
+        },
+      question3: {
+          question_text: 'This is section 3 question 3 bruhhh!',
+          option_A_text: 'Option A #8',
+          option_B_text: 'Option B #8'
+        },
+      question4: {
+          question_text: 'This is section 3 question 4 bruhhh!',
+          option_A_text: 'Option A #9',
+          option_B_text: 'Option B #9'
+        },
+    },
   });
 });
 

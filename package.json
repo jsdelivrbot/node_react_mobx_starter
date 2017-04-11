@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rimraf static",
     "build:webpack": "NODE_ENV=production webpack --config webpack.config.prod.js",
-    "build": "npm run clean && npm run build:webpack && nodemon app",
+    "build": "npm run clean && npm run build:webpack && node app",
     "start": "node app.js"
   },
   "dependencies": {

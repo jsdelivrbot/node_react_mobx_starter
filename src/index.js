@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ViewStore from './store/ViewStore';
 import { startRouter } from './store/router';
-import { simpleFetch } from './store/fetch';
+import { fetchSurveyData } from './store/fetchData';
 
 import { App } from './components/App';
 //
@@ -11,11 +11,18 @@ const root = document.createElement('div');
 root.id = 'app';
 document.body.appendChild(root);
 
-// Prepare viewStore
-const viewStore = new ViewStore(simpleFetch);
-startRouter(viewStore)
+let surveyData;
 
-ReactDOM.render(
-  <App store= { viewStore } />,
-  document.querySelector('#app')
-);
+window.fetch('/api/questions', {method: 'get'}).then((res) => {
+  return res.json().then((json) => {
+    surveyData = json;
+    // Prepare viewStore
+    const viewStore = new ViewStore(surveyData);
+    startRouter(viewStore)
+
+    ReactDOM.render(
+      <App store= { viewStore } />,
+      document.querySelector('#app')
+    );
+  });
+}).catch((err) => {return 'ERROR: ' + err });

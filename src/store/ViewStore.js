@@ -1,35 +1,38 @@
 import { observable, computed, action, autorun } from 'mobx';
-import { fromPromise } from 'mobx-utils';
+
+class SurveyData {
+  @observable questions = {};
+
+  constructor (dataFromServer) {
+    this.questions = dataFromServer;
+    console.log('Got data from server:');
+    console.log(this.questions);
+  };
+};
+
+class AnswerSheet {
+
+  @observable answers = {};
+
+  constructor (questionsFromServer) {
+    var that = this;
+    Object.keys(questionsFromServer).forEach(function(keyOne) {
+      that.answers[keyOne] = {};
+      Object.keys(questionsFromServer[keyOne]).forEach(function(keyTwo){
+        that.answers[keyOne][keyTwo] = {
+          answer: null
+        };
+      });
+    });
+  };
+};
 
 class ViewStore {
 
-    // @observable currentUserIP = null;
+    @observable surveyData = null;
     @observable currentView = null;
 
-    @observable answers = {
-      section1: {
-        question1: null,
-        question2: null,
-        question3: null,
-      },
-      section2: {
-        question1: null,
-        question2: null,
-        question3: null,
-        question4: null,
-        question5: null,
-        question6: null,
-      },
-      section3: {
-        question1: null,
-        question2: null,
-        question3: null,
-      },
-    };
-
-    // constructor(fetch) {
-    //     this.fetch = fetch
-    // }
+    @observable answers = null;
 
     @computed get currentPath() {
         switch(this.currentView.section) {
@@ -40,6 +43,18 @@ class ViewStore {
               break;
 
         }
+    }
+
+    @computed get questionText() {
+      return this.surveyData.questions['section' + this.currentView.section]['question' + this.currentView.question].question_text;
+    }
+
+    @computed get option_A() {
+      return this.surveyData.questions['section' + this.currentView.section]['question' + this.currentView.question].option_A_text;
+    }
+
+    @computed get option_B() {
+      return this.surveyData.questions['section' + this.currentView.section]['question' + this.currentView.question].option_B_text;
     }
 
     @action showIntro() {
@@ -75,6 +90,15 @@ class ViewStore {
             question: questionId
         }
     }
+
+    constructor (dataFromServer) {
+      this.surveyData = new SurveyData(dataFromServer);
+      console.log('questions set up successfully');
+      console.log(this.surveyData.questions);
+
+      this.answers = new AnswerSheet(dataFromServer).answers;
+      console.log('answer sheet set up successfully');
+    };
 
 }
 

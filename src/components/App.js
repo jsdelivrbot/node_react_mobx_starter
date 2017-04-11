@@ -47,14 +47,16 @@ const Intro = observer(({ store }) => (
 // NOTE: THE 'VALUE' OF EACH ANSWER WILL REALISTICALLY COME FROM OUR CMS! SO, USE THAT VALUE EXPLICITLY RATHER THAN DECLARING IT HERE
 const Section = observer(({ store }) => {
 
-        var answerA = true;
-        var answerB = false;
+        let questionText = store.questionText;
+        let answerA = store.option_A;
+        let answerB = store.option_B;
 
         return (
             <div>
               <h1>section {store.currentView.section}, question {store.currentView.question}</h1>
-              <button onClick={() => store.updateAnswers(store.currentView.section, store.currentView.question, answerA)}>True</button>
-              <button onClick={() => store.updateAnswers(store.currentView.section, store.currentView.question, answerB)}>False</button>
+              <h2>{questionText}</h2>
+              <button onClick={() => store.updateAnswers(store.currentView.section, store.currentView.question, true)}>{answerA}</button>
+              <button onClick={() => store.updateAnswers(store.currentView.section, store.currentView.question, false)}>{answerB}</button>
             </div>
         )
 })
