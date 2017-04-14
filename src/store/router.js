@@ -1,22 +1,25 @@
-import { Router } from 'director/build/director';
+// import { Router } from 'director';
 import { autorun } from 'mobx';
 
 export function startRouter(store) {
-
+    // console.log('trying to start da router and shit');
+    console.log('da viewstore: ', store);
     // update state on url change
     const router = new Router({
-        // "/question/:questionId": (id) => store.showDocument(id),
-
-        "/intro/": () => store.showIntro(),
-        "/section/:sectionId/question/:questionId": (sectionId, questionId) => store.showSection(sectionId, questionId),
-
-
-        //  pass ^this^ a string or something to generate a unique route for user results
-        // on the client side rather than sending stuff back to the server. better for mobile use
-        // less reliance on the server too
-
+        "/intro": () => {
+          console.log("intro");
+          store.showIntro()
+        },
+        "/survey/:stringRoute": (stringRoute) => store.routeSection(stringRoute),
+        //   console.log(stringRoute);
+        //   console.log("yo!");
+        //   store.routeSection(stringRoute);
+        // }
     }).configure({
-        notfound: () => store.showIntro(),
+        notfound: () => {
+          console.log('this is not found');
+          store.showCurrent()
+        },
         html5history: true
     }).init()
 

@@ -16,9 +16,13 @@ let surveyData;
 window.fetch('/api/questions', {method: 'get'}).then((res) => {
   return res.json().then((json) => {
     surveyData = json;
+
     // Prepare viewStore
     const viewStore = new ViewStore(surveyData);
     startRouter(viewStore)
+
+    console.log('test');
+    console.log(viewStore);
 
     ReactDOM.render(
       <App store= { viewStore } />,

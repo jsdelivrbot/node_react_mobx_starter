@@ -30,18 +30,19 @@ class AnswerSheet {
 class ViewStore {
 
     @observable surveyData = null;
-    @observable currentView = null;
+    @observable currentView = {
+      section: 0,
+      question: 0
+    };
 
     @observable answers = null;
 
     @computed get currentPath() {
         switch(this.currentView.section) {
-            case "intro": return "/intro/"
+            case 0: return "/intro"
               break;
-
-            default: return `/section/${this.currentView.section}/question/${this.currentView.question}/`
+            default: return `/survey/${this.currentView.section}_${this.currentView.question}`
               break;
-
         }
     }
 
@@ -59,8 +60,15 @@ class ViewStore {
 
     @action showIntro() {
         this.currentView = {
-            section: "intro",
+            section: 0,
         }
+    }
+
+    @action showCurrent() {
+      this.currentView = {
+          section: this.currentView.section,
+          question: this.currentView.question
+      }
     }
 
     @action updateAnswers(sectionId, questionId, userAnswer) {
@@ -91,10 +99,22 @@ class ViewStore {
         }
     }
 
+    @action routeSection(stringRoute) {
+      // var that = this;
+      var params = stringRoute.split('_');
+      var section = params[0];
+      var question = params[1];
+      // window.alert('routeSection called', section, question);
+      this.currentView = {
+        section: section,
+        question: question
+      }
+    }
+
     constructor (dataFromServer) {
       this.surveyData = new SurveyData(dataFromServer);
-      console.log('questions set up successfully');
-      console.log(this.surveyData.questions);
+      // console.log('questions set up successfully');
+      // console.log(this.surveyData.questions);
 
       this.answers = new AnswerSheet(dataFromServer).answers;
       console.log('answer sheet set up successfully');

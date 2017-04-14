@@ -9,8 +9,9 @@ var http = require('http');
 var fs = require('fs');
 
 var app = express();
+app.set('view engine', 'ejs')
 
-app.use(express.static('public'));
+app.use('/public', express.static('public'));
 //Webpack config to enable hot reloading
 if (process.env.NODE_ENV === 'production') {
   console.log('Running in production mode');
@@ -113,12 +114,13 @@ app.get('/api/questions', function (req, res) {
   });
 });
 
+app.get('/intro', function (req, res) {
+  res.render('index');
+});
 
-// app.get('*',function (req, res) {
-//         res.redirect('/');
-//     });
-
-
+app.get('/survey/*', function (req, res) {
+  res.render('index');
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

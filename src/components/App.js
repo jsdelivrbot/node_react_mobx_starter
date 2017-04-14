@@ -3,35 +3,52 @@ import { observer } from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 import { observable, autorun } from 'mobx';
 
-export const App = observer(({ store }) => (
+export const App = observer(({ store }) => {
+
+  console.log('hi');
+
+  return (
     <div>
         { renderCurrentView(store) }
         <DevTools />
     </div>
-))
+  )
+})
+
+// export const App = observer(({ store }) => {
+//   return (
+//     <div>
+//       <h1> hello world </h1>
+//     </div>
+//   )
+// })
+
 
 function renderCurrentView(store) {
 
     autorun(() => {
-      console.log(store.answers);
+      console.log('the current view is: ', store.currentView);
     })
 
+    console.log('bloop');
+
     const view = store.currentView;
-    switch (view.section) {
-        case "intro":
-            return <Intro store={store} />
+    console.log(typeof view.section);
+    switch (Number(view.section)) {
+        case 0:
+            return <Intro view={view} store={store} />
             break;
         case 1:
-            return <Section store={store} />
+            return <Section view={view} store={store} />
             break;
         case 2:
-            return <Section store={store} />
+            return <Section view={view} store={store} />
             break;
         case 3:
-            return <Section store={store} />
+            return <Section view={view} store={store} />
             break;
         default:
-            return <End store={store} />
+            return  <Intro view={view} store={store} />
             break;
     }
 }
