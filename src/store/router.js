@@ -2,12 +2,9 @@
 import { autorun } from 'mobx';
 
 export function startRouter(store) {
-    // console.log('trying to start da router and shit');
-    console.log('da viewstore: ', store);
     // update state on url change
     const router = new Router({
         "/intro": () => {
-          console.log("intro");
           store.showIntro()
         },
         "/survey/:stringRoute": (stringRoute) => store.routeSection(stringRoute),

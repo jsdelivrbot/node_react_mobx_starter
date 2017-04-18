@@ -21,9 +21,6 @@ window.fetch('/api/questions', {method: 'get'}).then((res) => {
     const viewStore = new ViewStore(surveyData);
     startRouter(viewStore)
 
-    console.log('test');
-    console.log(viewStore);
-
     ReactDOM.render(
       <App store= { viewStore } />,
       document.querySelector('#app')
@@ -31,7 +28,6 @@ window.fetch('/api/questions', {method: 'get'}).then((res) => {
 
     // Hot Module Replacement API
     if (module.hot) {
-      console.log('its hot ');
       module.hot.accept(() => {
         ReactDOM.render(
           <App store= { viewStore } />,

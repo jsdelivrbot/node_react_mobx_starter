@@ -5,8 +5,6 @@ import { observable, autorun } from 'mobx';
 
 export const App = observer(({ store }) => {
 
-  console.log('hi');
-
   return (
     <div>
         { renderCurrentView(store) }
@@ -15,15 +13,6 @@ export const App = observer(({ store }) => {
   )
 })
 
-// export const App = observer(({ store }) => {
-//   return (
-//     <div>
-//       <h1> hello world </h1>
-//     </div>
-//   )
-// })
-
-
 function renderCurrentView(store) {
 
     autorun(() => {
@@ -31,7 +20,6 @@ function renderCurrentView(store) {
     })
 
     const view = store.currentView;
-    console.log(typeof view.section);
     switch (Number(view.section)) {
         case 0:
             return <Intro view={view} store={store} />
