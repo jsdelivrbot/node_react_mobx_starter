@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use('/static', express.static('static'));
 } else {
   // When not in production, enable hot reloading
-  console.log('trying to hot reload');
+  console.log('running in dev mode');
   var chokidar = require('chokidar');
   var webpack = require('webpack');
   var webpackConfig = require('./webpack.config.dev');
@@ -50,7 +50,6 @@ if (process.env.NODE_ENV === 'production') {
 
 // THIS IS OUR REST API
 app.get('/api/questions', function (req, res) {
-  console.log('req at questions endpoint');
   res.send({
     section1: {
       question1: {

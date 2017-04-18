@@ -59,7 +59,6 @@ const Intro = observer(({ store }) => (
 ))
 
 
-// NOTE: THE 'VALUE' OF EACH ANSWER WILL REALISTICALLY COME FROM OUR CMS! SO, USE THAT VALUE EXPLICITLY RATHER THAN DECLARING IT HERE
 const Section = observer(({ store }) => {
 
         let questionText = store.questionText;
