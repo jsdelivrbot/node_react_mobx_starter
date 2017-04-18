@@ -1,8 +1,12 @@
 {
-  "name": "node-tut",
+  "name": "EYF-StackTesting",
   "version": "1.0.0",
-  "description": "This is a node tutorialk",
+  "description": "Testing sandbox for the EYF v2 App!",
   "main": "index.js",
+  "repository" : {
+      "type" : "git",
+      "url" : "https://zfalen@bitbucket.org/partnerscreative/mobx_stack_testing_with_keystone.git"
+  },
   "scripts": {
     "clean": "rimraf static",
     "build:webpack": "NODE_ENV=production webpack --config webpack.config.prod.js",
@@ -45,10 +49,10 @@
     "webpack": "^2.3.3"
   },
   "devDependencies": {
-    "babel-core": "^6.0.14",
     "babel-cli": "^6.11.4",
+    "babel-core": "^6.0.14",
     "babel-eslint": "^7.2.1",
-    "babel-loader": "^6.0.0",
+    "babel-loader": "^v7.0.0-alpha.2",
     "babel-plugin-array-includes": "^2.0.0",
     "babel-plugin-transform-decorators-legacy": "^1.0.0",
     "babel-plugin-transform-object-assign": "^6.0.0",
@@ -56,10 +60,11 @@
     "babel-preset-react": "^6.0.0",
     "babel-preset-react-hmre": "^1.0.0",
     "babel-preset-stage-1": "^6.0.0",
-    "clean-webpack-plugin": "^0.1.8",
     "chokidar": "^1.2.0",
+    "clean-webpack-plugin": "^0.1.8",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.10.3",
     "react-transform-catch-errors": "^1.0.0",
