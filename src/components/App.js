@@ -30,8 +30,6 @@ function renderCurrentView(store) {
       console.log('the current view is: ', store.currentView);
     })
 
-    console.log('bloop');
-
     const view = store.currentView;
     console.log(typeof view.section);
     switch (Number(view.section)) {

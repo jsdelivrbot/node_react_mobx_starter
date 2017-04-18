@@ -13,11 +13,12 @@ module.exports = {
     publicPath: '/static/'
   },
   plugins: [
+    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
+    new webpack.NoErrorsPlugin()
   ],
-module: {
-  loaders: [
+  module: {
+    loaders: [
         {
           test: /\.(js|jsx)$/,
           exclude: /(node_modules|bower_components)/,

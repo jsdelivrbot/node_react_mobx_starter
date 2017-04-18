@@ -28,5 +28,17 @@ window.fetch('/api/questions', {method: 'get'}).then((res) => {
       <App store= { viewStore } />,
       document.querySelector('#app')
     );
+
+    // Hot Module Replacement API
+    if (module.hot) {
+      console.log('its hot ');
+      module.hot.accept(() => {
+        ReactDOM.render(
+          <App store= { viewStore } />,
+          document.querySelector('#app')
+        );
+      });
+    }
+
   });
 }).catch((err) => {return 'ERROR: ' + err });

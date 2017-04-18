@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use('/static', express.static('static'));
 } else {
   // When not in production, enable hot reloading
-
+  console.log('trying to hot reload');
   var chokidar = require('chokidar');
   var webpack = require('webpack');
   var webpackConfig = require('./webpack.config.dev');
@@ -33,17 +33,19 @@ if (process.env.NODE_ENV === 'production') {
   // Do "hot-reloading" of express stuff on the server
   // Throw away cached modules and re-require next time
   // Ensure there's no important state in there!
-  var watcher = chokidar.watch('./server');
-  watcher.on('ready', function() {
-    watcher.on('all', function() {
-      console.log('Clearing /server/ module cache from server');
-      Object.keys(require.cache).forEach(function(id) {
-        if (/\/server\//.test(id)) {
-          delete require.cache[id];
-        }
-      });
-    });
-  });
+
+  // RE-ENABLE WHEN YOU REFACTOR TO SERVER FOLDER
+  // var watcher = chokidar.watch('./server');
+  // watcher.on('ready', function() {
+  //   watcher.on('all', function() {
+  //     console.log('Clearing /server/ module cache from server');
+  //     Object.keys(require.cache).forEach(function(id) {
+  //       if (/\/server\//.test(id)) {
+  //         delete require.cache[id];
+  //       }
+  //     });
+  //   });
+  // });
 };
 
 // THIS IS OUR REST API
