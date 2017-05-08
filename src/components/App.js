@@ -1,23 +1,14 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 import { observable, autorun } from 'mobx';
 
-export const App = observer(({ store }) => {
 
-  return (
-    <div>
-        { renderCurrentView(store) }
-        <DevTools />
-    </div>
-  )
-})
+
 
 function renderCurrentView(store) {
 
-    autorun(() => {
-      console.log('the current view is: ', store.currentView);
-    })
+    console.log('the current view is: ', store.currentView);
 
     const view = store.currentView;
     switch (Number(view.section)) {
@@ -39,6 +30,16 @@ function renderCurrentView(store) {
     }
 }
 
+export const App = observer(({ store }) => {
+
+  return (
+    <div>
+        { renderCurrentView(store) }
+        <DevTools />
+    </div>
+  )
+})
+
 const Intro = observer(({ store }) => (
     <div>
       <h1>this is the intro</h1>
@@ -46,22 +47,28 @@ const Intro = observer(({ store }) => (
     </div>
 ))
 
+@observer
+class Section extends Component {
 
-const Section = observer(({ store }) => {
+        @observable store = this.props.store;
+        @observable num = Math.random();
 
-        let questionText = store.questionText;
-        let answerA = store.option_A;
-        let answerB = store.option_B;
+        render(){
+        let questionText = this.store.questionText;
+        let answerA = this.store.option_A;
+        let answerB = this.store.option_B;
 
         return (
             <div>
-              <h1>section {store.currentView.section}, question {store.currentView.question}</h1>
+              <h1>section {this.store.currentView.section}, question {this.store.currentView.question}</h1>
               <h2>{questionText}</h2>
-              <button onClick={() => store.updateAnswers(store.currentView.section, store.currentView.question, true)}>{answerA}</button>
-              <button onClick={() => store.updateAnswers(store.currentView.section, store.currentView.question, false)}>{answerB}</button>
+              <button onClick={() => {this.num = Math.random()}}>Number is {this.num}</button>
+              <button onClick={() => this.store.updateAnswers(this.store.currentView.section, this.store.currentView.question, true)}>{answerA}</button>
+              <button onClick={() => this.store.updateAnswers(this.store.currentView.section, this.store.currentView.question, false)}>{answerB}</button>
             </div>
         )
-})
+      }
+}
 
 const End = observer(({ store }) => {
         return (
