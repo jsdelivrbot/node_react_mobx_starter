@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { observer } from 'mobx-react';
+import { observer, Provider, inject } from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 import { observable, autorun } from 'mobx';
 
@@ -16,7 +16,7 @@ function renderCurrentView(store) {
             return <Intro view={view} store={store} />
             break;
         case 1:
-            return <Section view={view} store={store} />
+            return <Section view={view} store={store} color="blue" />
             break;
         case 2:
             return <Section view={view} store={store} />
@@ -30,15 +30,20 @@ function renderCurrentView(store) {
     }
 }
 
-export const App = observer(({ store }) => {
+@observer
+export class App extends Component {
 
-  return (
-    <div>
-        { renderCurrentView(store) }
-        <DevTools />
-    </div>
-  )
-})
+  render(){
+    return (
+      <Provider testStore={this.props.store} >
+        <div>
+            { renderCurrentView(this.props.store) }
+            <DevTools />
+        </div>
+      </Provider>
+    )
+  }
+}
 
 const Intro = observer(({ store }) => (
     <div>
@@ -47,10 +52,30 @@ const Intro = observer(({ store }) => (
     </div>
 ))
 
+@inject("testStore") @observer
+class Test extends Component {
+  render(){
+    return <h1>{this.props.testStore.testVar}</h1>
+  }
+}
+
+const Test2 = inject('testStore')(observer(({ testStore }) => {
+      return <h1 onClick={()=>{testStore.testVar = 'bla'}}>{testStore.testVar}</h1>
+    }))
+
+const Test3 = observer(({ store, color }) => {
+  return <h1 onClick={()=>{store.testVar = 'bla'}}>{store.testVar}<p>{color}</p></h1>
+})
+
+const Test4 = observer(({ ...bloop }) => {
+  return <h1 onClick={()=>{bloop.store.testVar = 'bla'}}>{bloop.store.testVar}</h1>
+})
+
 @observer
 class Section extends Component {
 
-        @observable store = this.props.store;
+        store = this.props.store;
+
         @observable num = Math.random();
 
         render(){
@@ -65,6 +90,10 @@ class Section extends Component {
               <button onClick={() => {this.num = Math.random()}}>Number is {this.num}</button>
               <button onClick={() => this.store.updateAnswers(this.store.currentView.section, this.store.currentView.question, true)}>{answerA}</button>
               <button onClick={() => this.store.updateAnswers(this.store.currentView.section, this.store.currentView.question, false)}>{answerB}</button>
+              <Test />
+              <Test2 />
+              <Test3 {...this.props} />
+              <Test4 {...this.props} />
             </div>
         )
       }

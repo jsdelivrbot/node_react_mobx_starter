@@ -35,6 +35,8 @@ class ViewStore {
       question: 0
     };
 
+    @observable testVar = 'Bloop';
+
     @observable answers = null;
 
     @computed get currentPath() {
