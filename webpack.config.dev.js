@@ -5,9 +5,9 @@ module.exports = {
   devtool: 'eval',
   entry: {
     bundle: ['webpack-hot-middleware/client',
-    './src/index.js']
-    },
-    output: {
+    './src/index.js'],
+  },
+  output: {
     path: path.join(__dirname, 'static'),
     filename: '[name].js',
     publicPath: '/static/'

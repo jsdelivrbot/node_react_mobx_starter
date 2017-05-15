@@ -13,29 +13,25 @@ function renderCurrentView(store) {
     const view = store.currentView;
     switch (Number(view.section)) {
         case 0:
-            return <Intro view={view} store={store} />
+            return <Intro />
             break;
         case 1:
-            return <Section view={view} store={store} color="blue" />
-            break;
         case 2:
-            return <Section view={view} store={store} />
-            break;
         case 3:
-            return <Section view={view} store={store} />
+            return <Section />
             break;
         default:
-            return  <Intro view={view} store={store} />
+            return  <Intro />
             break;
     }
-}
+}1.
 
 @observer
 export class App extends Component {
 
   render(){
     return (
-      <Provider testStore={this.props.store} >
+      <Provider store={this.props.store} >
         <div>
             { renderCurrentView(this.props.store) }
             <DevTools />
@@ -45,33 +41,24 @@ export class App extends Component {
   }
 }
 
-const Intro = observer(({ store }) => (
-    <div>
-      <h1>this is the intro</h1>
-      <button onClick={() => store.showSection(1,1)}>lets get started</button>
-    </div>
-))
+@inject("store") @observer
+class Intro extends Component {
+  render(){
+    return(
+      <div>
+        <h1>this is the intro</h1>
+        <button onClick={() => this.props.store.showSection(1,1)}>lets get started</button>
+      </div>
+    )}}
 
-@inject("testStore") @observer
+@inject("store") @observer
 class Test extends Component {
   render(){
-    return <h1>{this.props.testStore.testVar}</h1>
+    return <h1>{this.props.store.testVar}</h1>
   }
 }
 
-const Test2 = inject('testStore')(observer(({ testStore }) => {
-      return <h1 onClick={()=>{testStore.testVar = 'bla'}}>{testStore.testVar}</h1>
-    }))
-
-const Test3 = observer(({ store, color }) => {
-  return <h1 onClick={()=>{store.testVar = 'bla'}}>{store.testVar}<p>{color}</p></h1>
-})
-
-const Test4 = observer(({ ...bloop }) => {
-  return <h1 onClick={()=>{bloop.store.testVar = 'bla'}}>{bloop.store.testVar}</h1>
-})
-
-@observer
+@inject("store") @observer
 class Section extends Component {
 
         store = this.props.store;
@@ -91,18 +78,18 @@ class Section extends Component {
               <button onClick={() => this.store.updateAnswers(this.store.currentView.section, this.store.currentView.question, true)}>{answerA}</button>
               <button onClick={() => this.store.updateAnswers(this.store.currentView.section, this.store.currentView.question, false)}>{answerB}</button>
               <Test />
-              <Test2 />
-              <Test3 {...this.props} />
-              <Test4 {...this.props} />
             </div>
         )
       }
 }
 
-const End = observer(({ store }) => {
-        return (
-            <div>
-              <h1>YOU HAVE REACHED THE END</h1>
-            </div>
-        )
-})
+
+@inject("store") @observer
+class End extends Component {
+  render(){
+    return(
+      <div>
+        <h1>YOU HAVE REACHED THE END</h1>
+      </div>
+    )
+  }}
